@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Features — Coming Soon | Smart Water System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-deep:    #020c18;
+            --bg-mid:     #061525;
+            --primary:    #0ea5e9;
+            --primary-glow: rgba(14,165,233,0.25);
+            --teal:       #06b6d4;
+            --amber:      #f59e0b;
+            --success:    #10b981;
+            --danger:     #f43f5e;
+            --purple:     #818cf8;
+            --text:       #e2e8f0;
+            --text-muted: #64748b;
+            --border:     rgba(255,255,255,0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── ANIMATED BACKGROUND ── */
+        .bg-scene {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Grid lines */
+        .bg-scene::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(14,165,233,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14,165,233,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridDrift 30s linear infinite;
+        }
+        @keyframes gridDrift {
+            0%   { transform: translate(0,0); }
+            100% { transform: translate(60px,60px); }
+        }
+
+        /* Radial glow spots */
+        .glow-spot {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: floatGlow ease-in-out infinite;
+        }
+        .glow-spot.g1 { width:600px;height:600px; background:rgba(14,165,233,0.08); top:-200px; left:-100px; animation-duration:12s; }
+        .glow-spot.g2 { width:400px;height:400px; background:rgba(6,182,212,0.07); bottom:-100px; right:-50px; animation-duration:15s; animation-delay:3s; }
+        .glow-spot.g3 { width:300px;height:300px; background:rgba(129,140,248,0.06); top:40%; left:60%; animation-duration:18s; animation-delay:6s; }
+        @keyframes floatGlow {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%     { transform: translate(30px,-20px) scale(1.1); }
+            66%     { transform: translate(-20px,30px) scale(0.95); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: particleDrift linear infinite;
+            opacity: 0;
+        }
+        @keyframes particleDrift {
+            0%   { transform: translateY(100vh) translateX(0);   opacity: 0; }
+            10%  { opacity: 0.6; }
+            90%  { opacity: 0.3; }
+            100% { transform: translateY(-100px) translateX(40px); opacity: 0; }
+        }
+
+        /* ── HEADER / NAV ── */
+        .topbar {
+            position: relative; z-index: 10;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(2,12,24,0.7);
+            backdrop-filter: blur(16px);
+        }
+        .topbar-brand {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; color: var(--text);
+        }
+        .brand-dot {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--teal));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; color: white;
+        }
+        .brand-name { font-weight: 800; font-size: 1rem; }
+        .brand-sub  { font-size: 0.72rem; color: var(--text-muted); }
+
+        .topbar-back {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .topbar-back:hover { background: rgba(255,255,255,0.1); color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            position: relative; z-index: 5;
+            flex: 1;
+            padding: 60px 40px 80px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ── HERO SECTION ── */
+        .hero {
+            text-align: center;
+            padding: 20px 0 64px;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 28px;
+        }
+        .hero-badge i { font-size: 12px; }
+
+        /* Big animated sensor icon */
+        .sensor-icon-wrap {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto 36px;
+        }
+        .sensor-rings {
+            position: absolute;
+            inset: -30px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sensor-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(14,165,233,0.2);
+            animation: ringPulse 3s ease-out infinite;
+        }
+        .sensor-ring:nth-child(1) { width:100px;height:100px; animation-delay:0s; }
+        .sensor-ring:nth-child(2) { width:140px;height:140px; animation-delay:0.7s; }
+        .sensor-ring:nth-child(3) { width:180px;height:180px; animation-delay:1.4s; }
+        @keyframes ringPulse {
+            0%   { opacity: 0.8; transform: scale(0.8); }
+            100% { opacity: 0; transform: scale(1.4); }
+        }
+        .sensor-icon-main {
+            position: relative; z-index: 2;
+            width: 90px; height: 90px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(14,165,233,0.15), rgba(6,182,212,0.1));
+            border: 1.5px solid rgba(14,165,233,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; color: var(--primary);
+            box-shadow: 0 0 50px rgba(14,165,233,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+        @keyframes iconFloat {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-8px); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--primary) 70%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 560px;
+            margin: 0 auto 36px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* Status pill */
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(245,158,11,0.08);
+            border: 1px solid rgba(245,158,11,0.25);
+            border-radius: 14px;
+            padding: 14px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .status-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--amber);
+            animation: statusBlink 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes statusBlink {
+            0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(245,158,11,0.6); }
+            50%     { opacity: 0.7; box-shadow: 0 0 0 6px rgba(245,158,11,0); }
+        }
+
+        /* ── FEATURES GRID ── */
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 56px;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--card-accent, var(--primary)), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .feature-card:hover {
+            border-color: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-3px);
+        }
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-card.accent-amber { --card-accent: var(--amber); }
+        .feature-card.accent-teal  { --card-accent: var(--teal); }
+        .feature-card.accent-purple{ --card-accent: var(--purple); }
+        .feature-card.accent-danger{ --card-accent: var(--danger); }
+        .feature-card.accent-success{--card-accent: var(--success); }
+        .feature-card.accent-primary{--card-accent: var(--primary); }
+
+        .card-icon-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 18px;
+        }
+        .card-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .icon-amber  { background: rgba(245,158,11,0.12); color: var(--amber); }
+        .icon-teal   { background: rgba(6,182,212,0.12); color: var(--teal); }
+        .icon-purple { background: rgba(129,140,248,0.12); color: var(--purple); }
+        .icon-danger { background: rgba(244,63,94,0.12); color: var(--danger); }
+        .icon-success{ background: rgba(16,185,129,0.12); color: var(--success); }
+        .icon-primary{ background: rgba(14,165,233,0.12); color: var(--primary); }
+
+        .coming-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .tag-soon    { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+        .tag-planned { background: rgba(129,140,248,0.12); color: var(--purple); border: 1px solid rgba(129,140,248,0.25); }
+        .tag-dev     { background: rgba(14,165,233,0.12); color: var(--primary); border: 1px solid rgba(14,165,233,0.25); }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+        .feature-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        .hardware-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+        .hw-chip {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .hw-chip i { font-size: 10px; color: rgba(255,255,255,0.25); }
+
+        /* ── WHAT HAPPENS TIMELINE ── */
+        .timeline {
+            margin-bottom: 56px;
+        }
+        .timeline-track {
+            position: relative;
+            padding-left: 40px;
+        }
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 12px;
+            bottom: 12px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), transparent);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            padding: 0 0 32px 20px;
+        }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-dot {
+            position: absolute;
+            left: -29px;
+            top: 4px;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .dot-done    { background: rgba(16,185,129,0.2); border: 1.5px solid var(--success); color: var(--success); }
+        .dot-current { background: rgba(245,158,11,0.15); border: 1.5px solid var(--amber); color: var(--amber); animation: dotPulse 2s ease-in-out infinite; }
+        .dot-pending { background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.12); color: var(--text-muted); }
+        @keyframes dotPulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
+            50%     { box-shadow: 0 0 0 6px rgba(245,158,11,0); }
+        }
+        .timeline-item h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .timeline-item.pending h4 { color: var(--text-muted); }
+        .timeline-item p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ── CTA BANNER ── */
+        .cta-banner {
+            background: rgba(14,165,233,0.06);
+            border: 1px solid rgba(14,165,233,0.2);
+            border-radius: 24px;
+            padding: 40px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-bottom: 56px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .cta-text h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        .cta-text p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.5;
+            max-width: 480px;
+        }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--teal));
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            box-shadow: 0 4px 24px rgba(14,165,233,0.35);
+            text-decoration: none;
+        }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(14,165,233,0.5); }
+
+        /* ── SECTION DIVIDER ── */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0 0 48px;
+        }
+
+        /* ── GRID 2-COL ── */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 56px; }
+        @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        /* ── NOTIFY FORM ── */
+        .notify-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+        }
+        .notify-card h3 { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 6px; }
+        .notify-card p  { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
+        .notify-input-row {
+            display: flex; gap: 10px;
+        }
+        .notify-input-row input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .notify-input-row input:focus { border-color: rgba(14,165,233,0.5); }
+        .notify-input-row input::placeholder { color: var(--text-muted); }
+        .notify-input-row button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--teal));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        .notify-input-row button:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(14,165,233,0.4); }
+        .notify-success { display:none; font-size:0.85rem; color:var(--success); margin-top:12px; }
+        .notify-success.show { display:block; }
+
+        /* ── FAQ ── */
+        .faq-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+        }
+        .faq-card h3 { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 18px; }
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+            cursor: pointer;
+        }
+        .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .faq-q {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.8);
+            gap: 12px;
+        }
+        .faq-q i { font-size: 12px; color: var(--text-muted); transition: transform 0.3s; flex-shrink:0; }
+        .faq-item.open .faq-q i { transform: rotate(180deg); color: var(--primary); }
+        .faq-a {
+            display: none;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+        .faq-item.open .faq-a { display: block; }
+
+        /* ── FOOTER ── */
+        .page-footer {
+            position: relative; z-index: 5;
+            text-align: center;
+            padding: 24px 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            background: rgba(2,12,24,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .main { padding: 40px 20px 60px; }
+            .topbar { padding: 16px 20px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .cta-banner { padding: 28px; }
+            .hero h1 { font-size: 2rem; }
+            .notify-input-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background scene -->
+<div class="bg-scene">
+    <div class="glow-spot g1"></div>
+    <div class="glow-spot g2"></div>
+    <div class="glow-spot g3"></div>
+    <!-- Floating particles -->
+    <div class="particle" style="left:10%;animation-duration:12s;animation-delay:0s;"></div>
+    <div class="particle" style="left:25%;animation-duration:18s;animation-delay:3s;background:var(--teal)"></div>
+    <div class="particle" style="left:45%;animation-duration:14s;animation-delay:6s;"></div>
+    <div class="particle" style="left:65%;animation-duration:20s;animation-delay:1s;background:var(--purple)"></div>
+    <div class="particle" style="left:82%;animation-duration:16s;animation-delay:4s;"></div>
+</div>
+
+<!-- Top Bar -->
+<header class="topbar">
+    <a href="dashboard.jsp" class="topbar-brand">
+        <div class="brand-dot"><i class="fas fa-tint"></i></div>
+        <div>
+            <div class="brand-name">Smart Water System</div>
+            <div class="brand-sub">IoT & Hardware Features</div>
+        </div>
+    </a>
+    <a href="javascript:history.back()" class="topbar-back">
+        <i class="fas fa-arrow-left"></i> Go Back
+    </a>
+</header>
+
+<!-- Main Content -->
+<main class="main">
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-tools"></i>
+            Hardware Integration Pending
+        </div>
+
+        <div class="sensor-icon-wrap">
+            <div class="sensor-rings">
+                <div class="sensor-ring"></div>
+                <div class="sensor-ring"></div>
+                <div class="sensor-ring"></div>
+            </div>
+            <div class="sensor-icon-main">
+                <i class="fas fa-microchip"></i>
+            </div>
+        </div>
+
+        <h1>IoT Features<br>Coming Soon</h1>
+        <p>
+            This feature requires physical IoT sensors and hardware to be installed and connected.
+            Once the hardware setup is complete, this section will go fully live with real-time data.
+        </p>
+
+        <div class="status-pill">
+            <div class="status-dot"></div>
+            <span>Awaiting hardware installation &amp; sensor calibration</span>
+        </div>
+    </section>
+
+    <!-- ── IOT FEATURES GRID ── -->
+    <div class="section-label">Planned IoT Features</div>
+
+    <div class="features-grid">
+
+        <!-- Live Tank Monitoring -->
+        <div class="feature-card accent-primary">
+            <div class="card-icon-row">
+                <div class="card-icon icon-primary"><i class="fas fa-water"></i></div>
+                <span class="coming-tag tag-soon">Coming Soon</span>
+            </div>
+            <h3>Live Tank Level Monitoring</h3>
+            <p>Real-time reservoir water level displayed as a percentage and litre reading. Visual tank animation updates every few seconds via sensor feed.</p>
+            <div class="hardware-list">
+                <span class="hw-chip"><i class="fas fa-microchip"></i>HC-SR04 Ultrasonic</span>
+                <span class="hw-chip"><i class="fas fa-memory"></i>Arduino Uno</span>
+                <span class="hw-chip"><i class="fas fa-wifi"></i>ESP8266 Wi-Fi</span>
+            </div>
+        </div>
+
+        <!-- Flow Rate & Leak Detection -->
+        <div class="feature-card accent-danger">
+            <div class="card-icon-row">
+                <div class="card-icon icon-danger"><i class="fas fa-exclamation-triangle"></i></div>
+                <span class="coming-tag tag-soon">Coming Soon</span>
+            </div>
+            <h3>Leak Detection Alerts</h3>
+            <p>Flow rate sensors compare inlet and outlet readings. Any significant mismatch triggers an immediate alert on the dashboard and sends an SMS notification.</p>
+            <div class="hardware-list">
+                <span class="hw-chip"><i class="fas fa-tint"></i>YF-S201 Flow Sensor</span>
+                <span class="hw-chip"><i class="fas fa-memory"></i>Arduino Mega</span>
+                <span class="hw-chip"><i class="fas fa-bell"></i>Buzzer Module</span>
+            </div>
+        </div>
+
+        <!-- Auto Meter Reading -->
+        <div class="feature-card accent-teal">
+            <div class="card-icon-row">
+                <div class="card-icon icon-teal"><i class="fas fa-tachometer-alt"></i></div>
+                <span class="coming-tag tag-dev">In Development</span>
+            </div>
+            <h3>Automatic Meter Reading</h3>
+            <p>Eliminates manual data entry — usage data is read directly from smart meters and synced to the billing database automatically at set intervals.</p>
+            <div class="hardware-list">
+                <span class="hw-chip"><i class="fas fa-bolt"></i>Smart Water Meter</span>
+                <span class="hw-chip"><i class="fas fa-memory"></i>ESP32</span>
+                <span class="hw-chip"><i class="fas fa-database"></i>MQTT Protocol</span>
+            </div>
+        </div>
+
+        <!-- Water Quality -->
+        <div class="feature-card accent-success">
+            <div class="card-icon-row">
+                <div class="card-icon icon-success"><i class="fas fa-flask"></i></div>
+                <span class="coming-tag tag-planned">Planned</span>
+            </div>
+            <h3>Water Quality Sensor</h3>
+            <p>Monitors pH level, turbidity, and TDS (Total Dissolved Solids) of supplied water. Alerts are raised if any reading goes out of the safe range.</p>
+            <div class="hardware-list">
+                <span class="hw-chip"><i class="fas fa-vial"></i>pH Sensor Module</span>
+                <span class="hw-chip"><i class="fas fa-eye"></i>Turbidity Sensor</span>
+                <span class="hw-chip"><i class="fas fa-atom"></i>TDS Meter</span>
+            </div>
+        </div>
+
+        <!-- Pump Control -->
+        <div class="feature-card accent-amber">
+            <div class="card-icon-row">
+                <div class="card-icon icon-amber"><i class="fas fa-sliders-h"></i></div>
+                <span class="coming-tag tag-planned">Planned</span>
+            </div>
+            <h3>Remote Pump Control</h3>
+            <p>Admin can remotely start or stop the water pump from the portal. Automatic pump-off triggers when the tank reaches 100% full to prevent overflow.</p>
+            <div class="hardware-list">
+                <span class="hw-chip"><i class="fas fa-plug"></i>Relay Module</span>
+                <span class="hw-chip"><i class="fas fa-pump-medical"></i>Submersible Pump</span>
+                <span class="hw-chip"><i class="fas fa-wifi"></i>IoT Gateway</span>
+            </div>
+        </div>
+
+        <!-- SMS / Push Alerts -->
+        <div class="feature-card accent-purple">
+            <div class="card-icon-row">
+                <div class="card-icon icon-purple"><i class="fas fa-sms"></i></div>
+                <span class="coming-tag tag-planned">Planned</span>
+            </div>
+            <h3>SMS & Push Notifications</h3>
+            <p>Residents get SMS alerts for bill generation, payment reminders, and emergency alerts like sudden pressure drops or contamination warnings.</p>
+            <div class="hardware-list">
+                <span class="hw-chip"><i class="fas fa-sim-card"></i>SIM800L GSM</span>
+                <span class="hw-chip"><i class="fas fa-satellite-dish"></i>Twilio API</span>
+                <span class="hw-chip"><i class="fas fa-mobile-alt"></i>Firebase FCM</span>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ── ACTIVATION TIMELINE ── -->
+    <div class="section-label">When Will This Be Active?</div>
+
+    <div class="timeline" style="margin-bottom: 56px;">
+        <div class="timeline-track">
+
+            <div class="timeline-item">
+                <div class="timeline-dot dot-done"><i class="fas fa-check"></i></div>
+                <h4>Software Portal — Complete ✓</h4>
+                <p>Login system, role-based access, user registration, admin dashboard, billing records — all fully functional.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot dot-done"><i class="fas fa-check"></i></div>
+                <h4>Database & Backend — Complete ✓</h4>
+                <p>MySQL schema, servlet APIs, session management, and user data management are all live and working.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot dot-current"><i class="fas fa-wrench" style="font-size:9px"></i></div>
+                <h4>Hardware Procurement — In Progress</h4>
+                <p>Sensors (HC-SR04, YF-S201), microcontrollers (Arduino, ESP32), relay modules and GSM modules are being sourced and tested.</p>
+            </div>
+
+            <div class="timeline-item pending">
+                <div class="timeline-dot dot-pending">4</div>
+                <h4>Sensor Installation & Wiring</h4>
+                <p>Physical installation of sensors onto the water tank, pipeline, and pump systems. Calibration of readings.</p>
+            </div>
+
+            <div class="timeline-item pending">
+                <div class="timeline-dot dot-pending">5</div>
+                <h4>Firmware & API Bridge</h4>
+                <p>Arduino/ESP32 firmware to push sensor data to the web server via Wi-Fi. API endpoints to receive and store live readings.</p>
+            </div>
+
+            <div class="timeline-item pending">
+                <div class="timeline-dot dot-pending">6</div>
+                <h4>IoT Dashboard Goes Live 🚀</h4>
+                <p>Real-time tank levels, automatic meter readings, live alerts and SMS notifications all become active. This page will be replaced with the live IoT panel.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ── CTA BANNER ── -->
+    <div class="cta-banner">
+        <div class="cta-text">
+            <h3>Have the Hardware? Let's Connect It.</h3>
+            <p>If the IoT sensors have been installed and tested, the admin can proceed to configure the hardware API endpoint and activate live monitoring from the system settings.</p>
+        </div>
+        <a href="dashboard.jsp" class="cta-btn">
+            <i class="fas fa-cog"></i> Go to Admin Dashboard
+        </a>
+    </div>
+
+    <!-- ── NOTIFY + FAQ ── -->
+    <div class="grid-2">
+
+        <!-- Notify Me -->
+        <div class="notify-card">
+            <h3><i class="fas fa-bell" style="color:var(--amber);margin-right:8px;"></i>Get Notified When It's Ready</h3>
+            <p>Leave your email and we'll notify you the moment IoT hardware features go live.</p>
+            <div class="notify-input-row">
+                <input type="email" id="notifyEmail" placeholder="your@email.com">
+                <button onclick="submitNotify()"><i class="fas fa-paper-plane"></i> Notify Me</button>
+            </div>
+            <div class="notify-success" id="notifySuccess">
+                <i class="fas fa-check-circle"></i> You're on the list! We'll email you when IoT goes live.
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-card">
+            <h3><i class="fas fa-question-circle" style="color:var(--primary);margin-right:8px;"></i>Frequently Asked Questions</h3>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">
+                    <span>Why does this show "Coming Soon"?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a">IoT features require physical sensors to be installed. The software is fully ready — we're just waiting for the hardware to be connected.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">
+                    <span>What hardware is needed?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a">HC-SR04 ultrasonic sensor for tank level, YF-S201 flow sensor for leak detection, ESP32 for Wi-Fi connectivity, and a relay module for pump control.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">
+                    <span>Will I need to update the software?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a">No. The API endpoints are already built. You just need to configure the hardware's IP address in DBConnection settings and the sensors will start feeding data.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">
+                    <span>Can users see IoT data too?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a">Yes. Once live, users will see their local tank level, water quality readings, and real-time usage on their personal dashboard.</div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+    Smart Water Billing &amp; Monitoring System &nbsp;·&nbsp; IoT Integration Pending &nbsp;·&nbsp;
+    <a href="dashboard.jsp" style="color:var(--primary);text-decoration:none;">Back to Dashboard</a>
+</footer>
+
+<script>
+    function toggleFaq(el) {
+        el.classList.toggle('open');
+    }
+
+    function submitNotify() {
+        const email = document.getElementById('notifyEmail').value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('notifyEmail').style.borderColor = 'rgba(244,63,94,0.6)';
+            return;
+        }
+        document.getElementById('notifyEmail').style.borderColor = '';
+        document.getElementById('notifySuccess').classList.add('show');
+        document.getElementById('notifyEmail').value = '';
+        document.querySelector('.notify-input-row button').disabled = true;
+        document.querySelector('.notify-input-row button').style.opacity = '0.5';
+    }
+</script>
+</body>
+</html>

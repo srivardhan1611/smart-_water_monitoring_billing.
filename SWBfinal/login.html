@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Water Billing System - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f172a 0%, #0c4a6e 50%, #0ea5e9 100%);
+            overflow: hidden;
+        }
+
+        /* Animated water bubbles */
+        .bubble { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.06); animation: rise linear infinite; }
+        .bubble:nth-child(1) { width:80px; height:80px; left:10%; animation-duration:8s; animation-delay:0s; }
+        .bubble:nth-child(2) { width:50px; height:50px; left:30%; animation-duration:6s; animation-delay:2s; }
+        .bubble:nth-child(3) { width:120px; height:120px; left:55%; animation-duration:10s; animation-delay:1s; }
+        .bubble:nth-child(4) { width:60px; height:60px; left:75%; animation-duration:7s; animation-delay:3s; }
+        .bubble:nth-child(5) { width:40px; height:40px; left:88%; animation-duration:5s; animation-delay:0.5s; }
+        @keyframes rise {
+            0% { bottom: -150px; opacity: 0; transform: scale(0.5); }
+            20% { opacity: 1; }
+            80% { opacity: 0.6; }
+            100% { bottom: 110%; opacity: 0; transform: scale(1.2); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 420px;
+        }
+
+        /* Brand header */
+        .brand {
+            text-align: center;
+            margin-bottom: 28px;
+            color: white;
+        }
+        .brand-icon {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; color: white;
+            margin: 0 auto 12px;
+            box-shadow: 0 8px 32px rgba(14,165,233,0.5);
+        }
+        .brand h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+        .brand p { font-size: 0.85rem; opacity: 0.7; margin-top: 4px; }
+
+        /* Card */
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 36px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 28px;
+            gap: 4px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 9px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            box-shadow: 0 4px 15px rgba(14,165,233,0.4);
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* Form */
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            color: rgba(255,255,255,0.75);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .input-wrap { position: relative; }
+        .input-wrap i {
+            position: absolute;
+            left: 14px; top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.35);
+            font-size: 14px;
+        }
+        .input-wrap input {
+            width: 100%;
+            padding: 13px 14px 13px 40px;
+            background: rgba(255,255,255,0.08);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-wrap input::placeholder { color: rgba(255,255,255,0.3); }
+        .input-wrap input:focus {
+            border-color: #0ea5e9;
+            background: rgba(14,165,233,0.1);
+            box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+            box-shadow: 0 4px 20px rgba(14,165,233,0.4);
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14,165,233,0.5);
+        }
+        .btn-submit:active { transform: translateY(0); }
+
+        .msg-error {
+            background: rgba(244,63,94,0.15);
+            border: 1px solid rgba(244,63,94,0.4);
+            color: #fda4af;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .msg-success {
+            background: rgba(16,185,129,0.15);
+            border: 1px solid rgba(16,185,129,0.4);
+            color: #6ee7b7;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        /* Row for two columns */
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .footer-note {
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            margin-top: 20px;
+        }
+        .footer-note a { color: rgba(255,255,255,0.6); text-decoration: underline; cursor: pointer; }
+
+        /* URL params message */
+        .url-msg { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+
+<div class="container">
+    <div class="brand">
+        <div class="brand-icon"><i class="fas fa-tint"></i></div>
+        <h1>Smart Water System</h1>
+        <p>Smart Billing & Monitoring Portal</p>
+    </div>
+
+    <div class="card">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('login')"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <button class="tab-btn" onclick="switchTab('register')"><i class="fas fa-user-plus"></i> Register</button>
+        </div>
+
+        <!-- LOGIN PANEL -->
+        <div id="tab-login" class="tab-panel active">
+            <div id="login-error" class="msg-error"></div>
+            <div id="logout-msg" class="msg-success">You have been logged out successfully.</div>
+
+            <form action="login" method="POST" onsubmit="return validateLogin()">
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="username" id="login-user" placeholder="Enter your username" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" id="login-pass" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-sign-in-alt"></i> &nbsp; Login</button>
+            </form>
+
+            <div class="footer-note">
+                No account? <a href="register.html">Create one here</a>
+            </div>
+        </div>
+
+        <!-- REGISTER PANEL -->
+        <div id="tab-register" class="tab-panel">
+            <div id="reg-error" class="msg-error"></div>
+            <div id="reg-success" class="msg-success"></div>
+
+            <form action="register" method="POST" onsubmit="return validateRegister()">
+                <div class="row2">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="firstName" id="reg-fname" placeholder="First name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="lastName" id="reg-lname" placeholder="Last name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" id="reg-email" placeholder="your@email.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-at"></i>
+                        <input type="text" name="username" id="reg-user" placeholder="Choose a username" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-phone"></i>
+                        <input type="text" name="phone" id="reg-phone" placeholder="10-digit mobile number" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" name="address" id="reg-addr" placeholder="Your full address" required>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password" id="reg-pass" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="confirmPassword" id="reg-cpass" placeholder="Confirm" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-user-plus"></i> &nbsp; Create Account</button>
+            </form>
+
+            <div class="footer-note">
+                Already have an account? <a onclick="switchTab('login')">Login here</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach((b,i) => {
+            b.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
+        });
+        document.getElementById('tab-login').classList.toggle('active', tab==='login');
+        document.getElementById('tab-register').classList.toggle('active', tab==='register');
+    }
+
+    function validateLogin() {
+        const u = document.getElementById('login-user').value.trim();
+        const p = document.getElementById('login-pass').value.trim();
+        const err = document.getElementById('login-error');
+        if(!u || !p) {
+            err.style.display='block';
+            err.textContent='Please fill in all fields.';
+            return false;
+        }
+        return true;
+    }
+
+    function validateRegister() {
+        const pass = document.getElementById('reg-pass').value;
+        const cpass = document.getElementById('reg-cpass').value;
+        const phone = document.getElementById('reg-phone').value;
+        const err = document.getElementById('reg-error');
+        err.style.display='none';
+        if(pass !== cpass) {
+            err.style.display='block';
+            err.textContent='Passwords do not match.';
+            return false;
+        }
+        if(pass.length < 6) {
+            err.style.display='block';
+            err.textContent='Password must be at least 6 characters.';
+            return false;
+        }
+        if(!/^\d{10}$/.test(phone)) {
+            err.style.display='block';
+            err.textContent='Phone number must be 10 digits.';
+            return false;
+        }
+        return true;
+    }
+
+    // Show messages from URL params
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('logout')==='true') {
+        document.getElementById('logout-msg').style.display='block';
+    }
+    if(params.get('error')==='invalid') {
+        const e = document.getElementById('login-error');
+        e.style.display='block';
+        e.textContent='Invalid username or password. Please try again.';
+    }
+    if(params.get('error')==='db') {
+        const e = document.getElementById('login-error');
+        e.style.display='block';
+        e.textContent='Database connection failed. Make sure MySQL is running and the password in DBConnection.java is correct.';
+    }
+    if(params.get('error')==='empty') {
+        const e = document.getElementById('login-error');
+        e.style.display='block';
+        e.textContent='Please enter both username and password.';
+    }
+    if(params.get('error')==='exception') {
+        const e = document.getElementById('login-error');
+        e.style.display='block';
+        const msg = params.get('msg') ? decodeURIComponent(params.get('msg')) : '';
+        e.textContent='Login error: ' + (msg || 'Unknown error. Check Tomcat logs.');
+    }
+    if(params.get('registered')==='true') {
+        switchTab('login');
+        const s = document.getElementById('logout-msg');
+        s.style.display='block';
+        s.textContent='Account created successfully! Please login.';
+    }
+    if(params.get('reg_error')) {
+        switchTab('register');
+        const e = document.getElementById('reg-error');
+        e.style.display='block';
+        e.textContent = decodeURIComponent(params.get('reg_error'));
+    }
+</script>
+</body>
+</html>

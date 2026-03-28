@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup Guide — Smart Water System</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;padding:0}
+.topbar{background:#020c18;border-bottom:1px solid rgba(255,255,255,0.08);padding:18px 48px;display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:16px;color:white}
+.brand-text{font-weight:800;font-size:1rem;color:white}
+.brand-sub{font-size:0.72rem;color:#64748b}
+.container{max-width:860px;margin:0 auto;padding:60px 40px 100px}
+h1{font-size:2.4rem;font-weight:900;letter-spacing:-1px;color:white;margin-bottom:12px}
+.subtitle{color:#64748b;font-size:1rem;margin-bottom:48px}
+/* Steps */
+.step{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px 36px;margin-bottom:24px;position:relative;overflow:hidden}
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,linear-gradient(90deg,#0ea5e9,#06b6d4))}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:rgba(14,165,233,0.15);color:#0ea5e9;font-size:0.8rem;font-weight:800;margin-bottom:14px}
+.step h2{font-size:1.2rem;font-weight:800;color:white;margin-bottom:8px}
+.step p{color:#94a3b8;font-size:0.9rem;margin-bottom:0}
+.step p+p{margin-top:8px}
+/* Code blocks */
+pre{background:#020c18;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px 24px;margin:16px 0;overflow-x:auto}
+code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#38bdf8;line-height:1.8}
+.comment{color:#475569}
+.string{color:#a3e635}
+.keyword{color:#f472b6}
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.88rem}
+th{background:rgba(14,165,233,0.1);color:#38bdf8;padding:12px 16px;text-align:left;font-weight:700;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px}
+td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);color:#cbd5e1;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#38bdf8;white-space:nowrap}
+/* Badges */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.badge-green{background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+.badge-amber{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
+.badge-blue{background:rgba(14,165,233,0.15);color:#0ea5e9;border:1px solid rgba(14,165,233,0.3)}
+/* Info boxes */
+.info-box{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:0.88rem;display:flex;gap:12px;align-items:flex-start}
+.info-box.warning{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);color:#fcd34d}
+.info-box.tip{background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.25);color:#7dd3fc}
+.info-box.success{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);color:#6ee7b7}
+.info-box i{margin-top:2px;flex-shrink:0}
+/* File tree */
+.file-tree{background:#020c18;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:0.82rem;line-height:2;color:#64748b}
+.file-tree .dir{color:#38bdf8;font-weight:600}
+.file-tree .file{color:#94a3b8}
+.file-tree .new{color:#10b981}
+.file-tree .note{color:#475569;font-style:italic;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.75rem}
+/* Divider */
+hr{border:none;border-top:1px solid rgba(255,255,255,0.06);margin:40px 0}
+h3{font-size:1rem;font-weight:800;color:white;margin:24px 0 10px}
+ul{padding-left:20px;color:#94a3b8;font-size:0.9rem}
+li{margin-bottom:6px}
+a{color:#38bdf8;text-decoration:none}
+a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">💧</div>
+  <div>
+    <div class="brand-text">Smart Water Billing & Monitoring System</div>
+    <div class="brand-sub">Complete Setup Guide</div>
+  </div>
+</div>
+
+<div class="container">
+
+<h1>Setup Guide</h1>
+<p class="subtitle">Follow these steps in order to get the project running on your machine.</p>
+
+<!-- ── PREREQUISITES ── -->
+<div class="step">
+  <div class="step-num">0</div>
+  <h2>Before You Start — What You Need</h2>
+  <p>Make sure these are installed on your computer:</p>
+  <table>
+    <tr><th>Software</th><th>Version</th><th>Download</th></tr>
+    <tr><td>Apache Tomcat</td><td>9.x or 10.x</td><td><a href="https://tomcat.apache.org/download-90.cgi">tomcat.apache.org</a></td></tr>
+    <tr><td>MySQL Server</td><td>8.0+</td><td><a href="https://dev.mysql.com/downloads/mysql/">dev.mysql.com</a></td></tr>
+    <tr><td>MySQL Workbench</td><td>Any</td><td><a href="https://dev.mysql.com/downloads/workbench/">dev.mysql.com</a></td></tr>
+    <tr><td>JDK (Java)</td><td>11 or 17</td><td><a href="https://adoptium.net/">adoptium.net</a></td></tr>
+  </table>
+  <div class="info-box tip">
+    <i>💡</i>
+    <span>You do <strong>not</strong> need Eclipse or any IDE. Just the above 4 tools and a text editor (VS Code is fine).</span>
+  </div>
+</div>
+
+<!-- ── STEP 1: EXTRACT ── -->
+<div class="step" style="--accent:linear-gradient(90deg,#10b981,#06b6d4)">
+  <div class="step-num" style="background:rgba(16,185,129,0.15);color:#10b981">1</div>
+  <h2>Extract the Project</h2>
+  <p>Unzip <code>SBW_water_system_enhanced.zip</code> anywhere on your computer. You will get a folder called <code>sbw_enhanced</code>.</p>
+  <div class="file-tree">
+    <span class="dir">sbw_enhanced/</span><br>
+    &nbsp;&nbsp;<span class="dir">├── src/com/water/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← Java source files</span><br>
+    &nbsp;&nbsp;<span class="dir">├── WEB-INF/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">├── web.xml</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← Servlet mappings</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">└── lib/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← MySQL JDBC driver</span><br>
+    &nbsp;&nbsp;<span class="new">├── login.html</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← Login page</span><br>
+    &nbsp;&nbsp;<span class="new">├── register.html</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← User registration (4-step)</span><br>
+    &nbsp;&nbsp;<span class="new">├── dashboard.jsp</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← Admin portal</span><br>
+    &nbsp;&nbsp;<span class="new">├── user_dashboard.jsp</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← User portal</span><br>
+    &nbsp;&nbsp;<span class="new">├── iot_coming_soon.html</span>&nbsp;&nbsp;&nbsp;<span class="note">← IoT hardware page</span><br>
+    &nbsp;&nbsp;<span class="file">├── schema.sql</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">← Run this in MySQL first</span><br>
+    &nbsp;&nbsp;<span class="file">└── save_bill.jsp</span>
+  </div>
+</div>
+
+<!-- ── STEP 2: MYSQL ── -->
+<div class="step" style="--accent:linear-gradient(90deg,#f59e0b,#f43f5e)">
+  <div class="step-num" style="background:rgba(245,158,11,0.15);color:#f59e0b">2</div>
+  <h2>Set Up the MySQL Database</h2>
+  <p>Open <strong>MySQL Workbench</strong> and connect to your local MySQL server. Then run the schema file:</p>
+
+  <h3>Option A — Using MySQL Workbench (Easiest)</h3>
+  <ol style="padding-left:20px;color:#94a3b8;font-size:0.9rem;margin-top:8px">
+    <li>Open MySQL Workbench → click your local connection</li>
+    <li>Go to <strong>File → Open SQL Script</strong></li>
+    <li>Browse to <code>sbw_enhanced/schema.sql</code> and open it</li>
+    <li>Click the ⚡ <strong>Execute</strong> button (or press Ctrl+Shift+Enter)</li>
+    <li>You should see: <code style="color:#10b981">Query OK</code> messages and a result showing 4 users, 5 records</li>
+  </ol>
+
+  <h3>Option B — Using Command Line</h3>
+  <pre><code><span class="comment">-- Open your terminal / command prompt</span>
+mysql -u root -p
+<span class="comment">-- Enter your MySQL password when prompted, then:</span>
+source C:/path/to/sbw_enhanced/schema.sql;</code></pre>
+
+  <div class="info-box success">
+    <i>✅</i>
+    <span>After running schema.sql, the database <code>water_system</code> will be created with 2 tables and 4 sample resident accounts ready to use.</span>
+  </div>
+</div>
+
+<!-- ── STEP 3: UPDATE DB PASSWORD ── -->
+<div class="step" style="--accent:linear-gradient(90deg,#f43f5e,#818cf8)">
+  <div class="step-num" style="background:rgba(244,63,94,0.15);color:#f43f5e">3</div>
+  <h2>Update Your MySQL Password in the Code</h2>
+  <p>Open this file in any text editor (Notepad, VS Code, etc.):</p>
+  <pre><code>sbw_enhanced/src/com/water/<span class="keyword">DBConnection.java</span></code></pre>
+
+  <p>Find these two lines and change them to match your MySQL setup:</p>
+  <pre><code>con = DriverManager.getConnection(
+    <span class="string">"jdbc:mysql://localhost:3306/water_system?useSSL=false&serverTimezone=UTC"</span>,
+    <span class="string">"root"</span>,        <span class="comment">// ← Change this to YOUR MySQL username</span>
+    <span class="string">"manager"</span>      <span class="comment">// ← Change this to YOUR MySQL password</span>
+);</code></pre>
+
+  <h3>Common Examples:</h3>
+  <table>
+    <tr><th>Your MySQL Setup</th><th>What to Write</th></tr>
+    <tr><td>Default install, no password</td><td><code>"root", ""</code></td></tr>
+    <tr><td>Password is "root"</td><td><code>"root", "root"</code></td></tr>
+    <tr><td>Password is "admin123"</td><td><code>"root", "admin123"</code></td></tr>
+    <tr><td>Custom username "water_user"</td><td><code>"water_user", "yourpassword"</code></td></tr>
+  </table>
+
+  <div class="info-box warning">
+    <i>⚠️</i>
+    <span>This is the most common reason the project fails to connect. Double-check your MySQL password matches exactly — it is case-sensitive.</span>
+  </div>
+</div>
+
+<!-- ── STEP 4: COMPILE ── -->
+<div class="step" style="--accent:linear-gradient(90deg,#818cf8,#0ea5e9)">
+  <div class="step-num" style="background:rgba(129,140,248,0.15);color:#818cf8">4</div>
+  <h2>Compile the Java Files</h2>
+  <p>Open a terminal / command prompt and navigate to the project folder. Then run the compile command.</p>
+
+  <h3>On Windows:</h3>
+  <pre><code>cd C:\path\to\sbw_enhanced
+
+javac -cp "WEB-INF\lib\mysql-connector-j-8.0.33.jar;C:\tomcat\lib\servlet-api.jar" ^
+      -d WEB-INF\classes ^
+      src\com\water\*.java</code></pre>
+
+  <h3>On Linux / macOS:</h3>
+  <pre><code>cd /path/to/sbw_enhanced
+
+javac -cp "WEB-INF/lib/mysql-connector-j-8.0.33.jar:/opt/tomcat/lib/servlet-api.jar" \
+      -d WEB-INF/classes \
+      src/com/water/*.java</code></pre>
+
+  <div class="info-box tip">
+    <i>💡</i>
+    <span><strong>Where is servlet-api.jar?</strong> It's inside your Tomcat folder at <code>tomcat/lib/servlet-api.jar</code>. Common paths:<br>
+    Windows: <code>C:\Program Files\Apache Software Foundation\Tomcat 9.0\lib\servlet-api.jar</code><br>
+    Linux: <code>/opt/tomcat/lib/servlet-api.jar</code></span>
+  </div>
+
+  <p style="margin-top:12px">After this command, check that <code>WEB-INF/classes/com/water/</code> now has <code>.class</code> files. If you see errors, re-check Step 3.</p>
+</div>
+
+<!-- ── STEP 5: DEPLOY ── -->
+<div class="step" style="--accent:linear-gradient(90deg,#0ea5e9,#10b981)">
+  <div class="step-num" style="background:rgba(14,165,233,0.15);color:#0ea5e9">5</div>
+  <h2>Deploy to Tomcat</h2>
+  <p>Copy the entire <code>sbw_enhanced</code> folder into Tomcat's <code>webapps</code> directory:</p>
+  <pre><code><span class="comment">-- Windows example:</span>
+Copy sbw_enhanced → C:\tomcat\webapps\sbw_enhanced
+
+<span class="comment">-- Linux example:</span>
+cp -r sbw_enhanced /opt/tomcat/webapps/sbw_enhanced</code></pre>
+
+  <h3>Then Start Tomcat:</h3>
+  <pre><code><span class="comment">-- Windows:</span>
+C:\tomcat\bin\startup.bat
+
+<span class="comment">-- Linux / macOS:</span>
+/opt/tomcat/bin/startup.sh</code></pre>
+
+  <div class="info-box success">
+    <i>🚀</i>
+    <span>Wait about 5–10 seconds for Tomcat to fully start, then open your browser and go to:<br>
+    <strong><code>http://localhost:8080/sbw_enhanced/</code></strong></span>
+  </div>
+</div>
+
+<!-- ── STEP 6: LOGIN ── -->
+<div class="step" style="--accent:linear-gradient(90deg,#10b981,#f59e0b)">
+  <div class="step-num" style="background:rgba(16,185,129,0.15);color:#10b981">6</div>
+  <h2>Login & Test</h2>
+  <p>The login page opens automatically. Use these credentials to test both portals:</p>
+
+  <table>
+    <tr><th>Role</th><th>Username</th><th>Password</th><th>Opens</th></tr>
+    <tr>
+      <td><span class="badge badge-blue">Admin</span></td>
+      <td>admin</td><td>admin</td>
+      <td>Admin Portal (dashboard.jsp)</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">User</span></td>
+      <td>saipranay</td><td>user123</td>
+      <td>User Portal (user_dashboard.jsp)</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">User</span></td>
+      <td>vardhan</td><td>user123</td>
+      <td>User Portal</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">User</span></td>
+      <td>geeta</td><td>user123</td>
+      <td>User Portal</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">User</span></td>
+      <td>vaishnavi</td><td>user123</td>
+      <td>User Portal</td>
+    </tr>
+  </table>
+
+  <p style="margin-top:12px">Or click <strong>Register</strong> on the login page to create a brand new account yourself.</p>
+</div>
+
+<hr>
+
+<!-- ── MYSQL CHANGES SECTION ── -->
+<h1 style="font-size:1.8rem;margin-bottom:8px">MySQL Database — Update Guide</h1>
+<p class="subtitle" style="margin-bottom:36px">Common database changes you will need to make.</p>
+
+<!-- Change Password -->
+<div class="step" style="--accent:linear-gradient(90deg,#f43f5e,#f59e0b)">
+  <div class="step-num" style="background:rgba(244,63,94,0.15);color:#f43f5e">A</div>
+  <h2>Change a User's Password</h2>
+  <p>Open MySQL Workbench, connect to your server, open a new query tab and run:</p>
+  <pre><code>USE water_system;
+
+<span class="comment">-- Change password for a specific user:</span>
+UPDATE users
+SET password = <span class="string">'new_password_here'</span>
+WHERE username = <span class="string">'saipranay'</span>;
+
+<span class="comment">-- Verify the change:</span>
+SELECT username, password FROM users WHERE username = <span class="string">'saipranay'</span>;</code></pre>
+  <div class="info-box tip">
+    <i>💡</i>
+    <span>Replace <code>'saipranay'</code> with any username from your users table, and <code>'new_password_here'</code> with the new password.</span>
+  </div>
+</div>
+
+<!-- Add new user manually -->
+<div class="step" style="--accent:linear-gradient(90deg,#10b981,#0ea5e9)">
+  <div class="step-num" style="background:rgba(16,185,129,0.15);color:#10b981">B</div>
+  <h2>Add a New Resident Manually</h2>
+  <p>To add a user directly via SQL (instead of using the registration page):</p>
+  <pre><code>USE water_system;
+
+INSERT INTO users
+    (first_name, last_name, email, username, phone, address, password, meter_no, role, is_active)
+VALUES
+    (<span class="string">'Ravi'</span>, <span class="string">'Kumar'</span>, <span class="string">'ravi@example.com'</span>,
+     <span class="string">'ravikumar'</span>, <span class="string">'9876540000'</span>,
+     <span class="string">'Flat 505, Block E, Hyderabad'</span>,
+     <span class="string">'user123'</span>,
+     <span class="string">'MTR1005'</span>,
+     <span class="string">'USER'</span>, 1);
+
+<span class="comment">-- Verify:</span>
+SELECT id, username, email, meter_no FROM users;</code></pre>
+  <div class="info-box warning">
+    <i>⚠️</i>
+    <span>Make sure the <code>email</code>, <code>username</code>, and <code>meter_no</code> are unique — the table will reject duplicates.</span>
+  </div>
+</div>
+
+<!-- View all users -->
+<div class="step" style="--accent:linear-gradient(90deg,#0ea5e9,#818cf8)">
+  <div class="step-num" style="background:rgba(14,165,233,0.15);color:#0ea5e9">C</div>
+  <h2>View All Users & Their Details</h2>
+  <pre><code>USE water_system;
+
+<span class="comment">-- See all registered users:</span>
+SELECT id, first_name, last_name, username, email, phone, meter_no, created_at
+FROM users
+ORDER BY id DESC;
+
+<span class="comment">-- Count total users:</span>
+SELECT COUNT(*) AS total_users FROM users;
+
+<span class="comment">-- Find a specific user:</span>
+SELECT * FROM users WHERE username = <span class="string">'saipranay'</span>;</code></pre>
+</div>
+
+<!-- View billing -->
+<div class="step" style="--accent:linear-gradient(90deg,#818cf8,#f59e0b)">
+  <div class="step-num" style="background:rgba(129,140,248,0.15);color:#818cf8">D</div>
+  <h2>View & Update Billing Records</h2>
+  <pre><code>USE water_system;
+
+<span class="comment">-- See all bills:</span>
+SELECT * FROM usage_records ORDER BY id DESC;
+
+<span class="comment">-- Bills for a specific user:</span>
+SELECT * FROM usage_records
+WHERE customer_name = <span class="string">'saipranay'</span>
+ORDER BY bill_date DESC;
+
+<span class="comment">-- Mark a bill as paid:</span>
+UPDATE usage_records
+SET is_paid = 1
+WHERE id = 3;
+
+<span class="comment">-- Total revenue collected:</span>
+SELECT
+    COUNT(*)           AS total_bills,
+    SUM(units)         AS total_litres,
+    SUM(bill_amount)   AS total_revenue,
+    SUM(CASE WHEN is_paid=1 THEN bill_amount ELSE 0 END) AS paid_amount,
+    SUM(CASE WHEN is_paid=0 THEN bill_amount ELSE 0 END) AS pending_amount
+FROM usage_records;</code></pre>
+</div>
+
+<!-- Delete user -->
+<div class="step" style="--accent:linear-gradient(90deg,#f59e0b,#f43f5e)">
+  <div class="step-num" style="background:rgba(245,158,11,0.15);color:#f59e0b">E</div>
+  <h2>Deactivate or Delete a User</h2>
+  <pre><code>USE water_system;
+
+<span class="comment">-- SAFE: Deactivate (user can't login, data preserved):</span>
+UPDATE users SET is_active = 0 WHERE username = <span class="string">'saipranay'</span>;
+
+<span class="comment">-- Reactivate a user:</span>
+UPDATE users SET is_active = 1 WHERE username = <span class="string">'saipranay'</span>;
+
+<span class="comment">-- PERMANENT: Delete a user entirely (use with caution):</span>
+DELETE FROM users WHERE username = <span class="string">'saipranay'</span>;</code></pre>
+  <div class="info-box warning">
+    <i>⚠️</i>
+    <span>Use <code>UPDATE is_active = 0</code> (deactivate) instead of DELETE wherever possible. Deleting removes the user permanently and cannot be undone.</span>
+  </div>
+</div>
+
+<!-- Reset all data -->
+<div class="step" style="--accent:linear-gradient(90deg,#f43f5e,#818cf8)">
+  <div class="step-num" style="background:rgba(244,63,94,0.15);color:#f43f5e">F</div>
+  <h2>Reset / Clear All Data (Fresh Start)</h2>
+  <pre><code>USE water_system;
+
+<span class="comment">-- Clear only billing records (keep users):</span>
+TRUNCATE TABLE usage_records;
+
+<span class="comment">-- Clear only registered users (keep bills):</span>
+TRUNCATE TABLE users;
+
+<span class="comment">-- Clear EVERYTHING and start fresh:</span>
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE usage_records;
+TRUNCATE TABLE users;
+SET FOREIGN_KEY_CHECKS = 1;
+
+<span class="comment">-- Verify tables are empty:</span>
+SELECT COUNT(*) FROM users;
+SELECT COUNT(*) FROM usage_records;</code></pre>
+  <div class="info-box warning">
+    <i>⚠️</i>
+    <span><strong>TRUNCATE is permanent.</strong> All data will be deleted. Only run this if you want a completely clean database.</span>
+  </div>
+</div>
+
+<hr>
+
+<!-- ── QUICK REFERENCE ── -->
+<h3 style="font-size:1.1rem;margin-bottom:16px">Quick Troubleshooting Reference</h3>
+<table>
+  <tr><th>Problem</th><th>Most Likely Cause</th><th>Fix</th></tr>
+  <tr>
+    <td>Page shows database error</td>
+    <td>Wrong MySQL password in DBConnection.java</td>
+    <td>Step 3 — update username/password</td>
+  </tr>
+  <tr>
+    <td>404 Not Found on login</td>
+    <td>Project not in webapps folder or Tomcat not started</td>
+    <td>Step 5 — re-check deployment</td>
+  </tr>
+  <tr>
+    <td>Login works but dashboard crashes</td>
+    <td>.class files not compiled</td>
+    <td>Step 4 — re-run javac command</td>
+  </tr>
+  <tr>
+    <td>Registration fails silently</td>
+    <td>Duplicate username or email already in DB</td>
+    <td>Run query C to see existing usernames</td>
+  </tr>
+  <tr>
+    <td>Tomcat error on startup</td>
+    <td>Port 8080 already in use</td>
+    <td>Change port in tomcat/conf/server.xml or stop other services</td>
+  </tr>
+</table>
+
+<div class="info-box success" style="margin-top:32px">
+  <i>🎉</i>
+  <span><strong>All done!</strong> Your Smart Water Billing & Monitoring System is ready. Admin logs in at <code>/login.html</code> → goes to admin portal. Users register at <code>/register.html</code> → log in → go to their personal portal.</span>
+</div>
+
+</div>
+</body>
+</html>
